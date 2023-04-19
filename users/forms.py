@@ -1,15 +1,31 @@
+# Form Imports
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser
+from django.forms import Textarea, EmailInput
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
+from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
 
-class SignUpForm(UserCreationForm):
-    email = forms.EmailField(max_length=254)
+# Internal Imports
+from .models import User
 
+class SignUpForm(forms.ModelForm):
+    
     class Meta:
-        model = CustomUser
-        fields = ('email', 'password1', 'password2')
+        model = User
+        fields = ('email', 'first_name', 'last_name', 'password')
 
-    def __init__(self, *args, **kwargs):
-        super(SignUpForm, self).__init__(*args, **kwargs)
-        self.fields['password1'].help_text = None
-        self.fields['password2'].help_text = None
+        labels = {
+            'email': ('Email'),
+        }
+        help_texts = {
+            'email': ('Some useful help text.'),
+        }
+        error_messages = {
+            'email': {
+                'max_length': ("This writer's name is too long."),
+            },
+        }
+        widgets = {
+            # 'first_name': Textarea(attrs={'cols': 80, 'rows': 1}),
+            'email': EmailInput(attrs={'class': 'form-control'}),
+        }

@@ -10,7 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-from pathlib import Path
+from pathlib import Path    
+import os
 
 try:
     from .secrets import secret_key
@@ -36,9 +37,12 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+
+CRISPY_TEMPLATE_PACK = "tailwind"
 
 INSTALLED_APPS = [
+    # Base apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,8 +50,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
+    # Extensions
     'crispy_forms',
-    'crispy_bootstrap4',
+    'crispy_tailwind',
+
+    # Internal apps
     'users'
 ]
 
@@ -60,8 +67,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
+    # Internal middleware
     'users.middleware.UpdateUserLocationMiddleware',  
-
 ]
 
 ROOT_URLCONF = 'website.urls'
@@ -71,7 +78,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             BASE_DIR / 'website/templates',
-
+            BASE_DIR / 'users/templates',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -123,7 +130,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = 'users.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -147,7 +154,17 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = BASE_DIR / "static_collection"
 
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_URL = '/media/'
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Additional Settings
+
+# LOGIN_REDIRECT_URL = ''
+# LOGIN_URL = 'login'

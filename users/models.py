@@ -30,7 +30,7 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
-class CustomUser(AbstractBaseUser, PermissionsMixin):
+class User(AbstractBaseUser, PermissionsMixin):
     
     # User data
     email = models.EmailField(unique=True)
@@ -53,3 +53,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+    
+# class FriendRequest(models.Model):
+#     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_requests')
+#     receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_requests')
+#     is_active = models.BooleanField(default=True)
+#     timestamp = models.DateTimeField(auto_now_add=True)
+
+#     def __str__(self):
+#         return f'{self.sender} sent a friend request to {self.receiver}'
+
+#     class Meta:
+#         unique_together = ('sender', 'receiver')
