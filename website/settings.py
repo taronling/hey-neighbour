@@ -37,9 +37,15 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+# CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 
-CRISPY_TEMPLATE_PACK = "tailwind"
+# CRISPY_TEMPLATE_PACK = "tailwind"
+
+COMPRESS_ROOT = BASE_DIR / ''
+
+COMPRESS_ENABLED = True
+
+STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
 
 INSTALLED_APPS = [
     # Base apps
@@ -51,8 +57,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     # Extensions
-    'crispy_forms',
-    'crispy_tailwind',
+    # 'crispy_forms',
+    # 'crispy_tailwind',
+    'compressor',
 
     # Internal apps
     'users'
