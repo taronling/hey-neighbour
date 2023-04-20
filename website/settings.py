@@ -158,6 +158,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "website/static",
     BASE_DIR / "users/static",
+    BASE_DIR / "node_modules"
 ]
 STATIC_ROOT = BASE_DIR / "static_collection"
 
