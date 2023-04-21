@@ -1,4 +1,3 @@
-# Django Imports
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils import timezone
@@ -46,22 +45,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
 
-    objects = CustomUserManager()
+    # Social Network Data
+    friends = models.ManyToManyField("User", blank=True, symmetrical=True)
+
+    # objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
     def __str__(self):
         return self.email
-    
-# class FriendRequest(models.Model):
-#     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_requests')
-#     receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_requests')
-#     is_active = models.BooleanField(default=True)
-#     timestamp = models.DateTimeField(auto_now_add=True)
-
-#     def __str__(self):
-#         return f'{self.sender} sent a friend request to {self.receiver}'
-
-#     class Meta:
-#         unique_together = ('sender', 'receiver')

@@ -114,7 +114,7 @@ DATABASES = {
         'HOST': database_host,
         'PORT': database_port,
         'OPTIONS': {
-            'options': '-c search_path=django_public,users',
+            'options': '-c search_path=public' # Might need to remove some of these
         },
     }
 }
