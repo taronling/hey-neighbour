@@ -10,8 +10,12 @@ class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError('The Email field must be set')
+        
         email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
+        user = self.model(
+            email=email, 
+            **extra_fields
+        )
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -32,9 +36,9 @@ class CustomUserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     
     # User data
-    email = models.EmailField(unique=True)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
+    email = models.EmailField(unique=True, blank=False, null=False)
+    first_name = models.CharField(max_length=30, blank=False, null=False)
+    last_name = models.CharField(max_length=30, blank=False, null=False)
 
     # Location data
     country = models.CharField(max_length=60, blank=True, null=True)
@@ -44,11 +48,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
+    last_online = models.DateTimeField(default=timezone.now)
 
     # Social Network Data
     friends = models.ManyToManyField("User", blank=True, symmetrical=True)
 
-    # objects = CustomUserManager()
+    objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']

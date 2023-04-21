@@ -23,3 +23,13 @@ class SignUpForm(UserCreationForm):
         email = cleaned_data.get('email')
         if email and User.objects.filter(email=email).exists():
             self.add_error('email', ValidationError("Email already exists"))
+
+    def save(self, commit=True):
+        user = super(SignUpForm, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        if commit:
+            user.save()
+        return user
+
+    
+    
