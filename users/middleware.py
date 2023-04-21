@@ -10,7 +10,9 @@ class UpdateUserLocationMiddleware:
 
         if request.user.is_authenticated:
             user = request.user
-            city, country = get_user_location(request)
+            # city, country = get_user_location(request)
+            city = 'TestCity'
+            country = 'TestCountry'
             if city and city != user.city and country and country != user.country:
                 user.city = city
                 user.country = country
