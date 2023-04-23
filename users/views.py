@@ -1,13 +1,21 @@
-from django.urls import reverse_lazy
+# Django Views
 from django.views.generic.edit import CreateView
-from django.views.generic import DetailView
-from django.contrib.auth.forms import UserCreationForm
+from django.views.generic import View, DetailView
+from django.contrib.auth.views import LoginView
+
+# Django Authentication
 from django.contrib.auth.models import User
-from .forms import SignUpForm
-from django.contrib.auth import login
+from .forms import SignUpForm, LoginForm
+from django.contrib.auth import login, authenticate
+
+# Django Redirects
+from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
 
 
-class SignUpView(CreateView):
+
+
+class UserSignUpView(CreateView):
     form_class = SignUpForm
     success_url = reverse_lazy('profile')
     template_name = 'signup.html'
@@ -19,12 +27,24 @@ class SignUpView(CreateView):
         response = super().form_valid(form)
         login(self.request, self.object)
         return response
+    
+
+class UserLoginView(LoginView):
+    template_name = 'login.html'
+    form_class = LoginForm
+    success_url = reverse_lazy('profile')
+
+    def form_valid(self, form):
+        user = form.get_user()
+        login(self.request, user)
+        return redirect(self.success_url)
+    
+
+    
 
 class UserProfileView(DetailView):
     model = User
     template_name = 'profile.html'
-    context_object_name = 'user'
 
     def get_object(self, queryset=None):
-        print(self.request.user)
         return self.request.user

@@ -24,6 +24,6 @@ from website.views import IndexView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', IndexView.as_view()),
+    path('', IndexView.as_view(), name='home'),
     path('user/', include('users.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

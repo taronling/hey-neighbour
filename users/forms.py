@@ -1,7 +1,7 @@
 # Form Imports
 from django import forms
 from django.core.exceptions import ValidationError
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 # Internal Imports
 from .models import User
@@ -30,6 +30,22 @@ class SignUpForm(UserCreationForm):
         if commit:
             user.save()
         return user
+    
 
-    
-    
+class LoginForm(AuthenticationForm):
+    email = forms.EmailField(widget=forms.TextInput(attrs={'placeholder': 'john.doe@company.com', 'class': 'w-full mt-2 p-2 border border-gray-300 rounded'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': '•••••••••', 'class': 'w-full mt-2 p-2 border border-gray-300 rounded'}))
+
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+        self.fields['username'].required = False
+
+    def clean(self):
+        email = self.cleaned_data.get('email')
+        password = self.cleaned_data.get('password')
+        
+        print('Email Passowrd')
+        print(email, password)
+        if email and password:
+            self.cleaned_data['username'] = email
+            return super(LoginForm, self).clean()
