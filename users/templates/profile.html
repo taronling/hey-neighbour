@@ -9,39 +9,21 @@
     <link rel="stylesheet" href="{% static 'website/static/css/home.css' %}">
     {% endcompress %}
 
-    <div class="container mx-auto px-4 py-8">
-        <div class="bg-white shadow-md rounded-lg p-6 w-full md:w-3/4 mx-auto">
-            <div class="flex items-center mb-6">
-                <div class="rounded-full">
-                    <img id="profile-picture" src="{% static 'users/static/img/profile-default.svg' %}" alt="Profile picture">
-                </div>
-                <div class="ml-8">
-                    <h2 class="text-2xl font-semibold">{{ user.first_name }} {{ user.last_name }}</h2>
-                    <p class="text-sm text-gray-500">{{ user.email }}</p>
-                    <div class="flex mt-4 space-x-4">
-                        <div>
-                            <h4 class="font-semibold">100</h4>
-                            <p class="text-sm text-gray-500">posts</p>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold">1,000</h4>
-                            <p class="text-sm text-gray-500">followers</p>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold">500</h4>
-                            <p class="text-sm text-gray-500">following</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="border-t border-gray-200 pt-4">
-                <h3 class="text-xl font-semibold mb-4">Posts</h3>
-                <div class="grid grid-cols-3 gap-4">
-                    {% for post in user.posts.all %}
-                        <div class="bg-gray-200 h-32 w-full"></div>
-                    {% endfor %}
-                </div>
-            </div>
+    
+    <div class="max-w bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <div id="profile-banner-container h-4 w-32">
+            <img id="profile-banner" class="rounded-t-lg object-cover" src="{% static 'users/static/img/background-default.jpeg' %}" alt="" />
+        </div>
+        <div class="p-5">
+            <a href="#">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Name Placeholder</h5>
+            </a>
+            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Bio Placeholder</p>
+            <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                Read more
+                <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </a>
         </div>
     </div>
+
 {% endblock %}
