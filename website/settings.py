@@ -14,8 +14,8 @@ from pathlib import Path
 import os
 
 try:
-    from .secrets import secret_key
-    from .secrets import database_name, database_host, database_port, database_admin_name, database_admin_password
+    from .secret_keys import secret_key
+    from .secret_keys import database_name, database_host, database_port, database_admin_name, database_admin_password
 except ImportError:
     raise('You need to create a secrets.py file with a secret_key variable')
 
