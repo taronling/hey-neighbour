@@ -7,3 +7,4 @@ secret_keys.py
 node_modules/
 static_collection/
 dev_env/
+CACHE/
