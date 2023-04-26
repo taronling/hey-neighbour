@@ -15,8 +15,9 @@
 </head>
 
 <body class="bg-green-50">
+    {% with request.user as user %}
+
     <div class="container mx-auto mt-4">
-        <!-- Add this -->
         <nav class="bg-green-50 border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-800">
             <div class="container flex flex-wrap items-center justify-between mx-auto">
                 <a href="{{ .Site.Params.homepage }}/" class="flex items-center">
@@ -53,14 +54,27 @@
                             <a href="#"
                                 class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Services</a>
                         </li>
-                        <li>
-                            <a href="{% url 'signup' %}"
-                                class="block py-2 pl-3 pr-4 text-gray-700 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Register</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'login' %}"
-                                class="block py-2 pl-3 pr-4 text-gray-700 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Login</a>
-                        </li>
+                        {% if user.is_authenticated %}
+                            <!-- Show profile and logout links for authenticated users -->
+                            <li>
+                                <a href="{% url 'home' %}"
+                                    class="block py-2 pl-3 pr-4 text-gray-700 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Logout</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'profile' %}"
+                                    class="block py-2 pl-3 pr-4 text-gray-700 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">My Profile</a>
+                            </li>
+                        {% else %}
+                            <!-- Show register and login links for unauthenticated users -->
+                            <li>
+                                <a href="{% url 'signup' %}"
+                                    class="block py-2 pl-3 pr-4 text-gray-700 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Register</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'login' %}"
+                                    class="block py-2 pl-3 pr-4 text-gray-700 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Login</a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
@@ -69,6 +83,7 @@
         
         {% endblock content %}
     </div>
+    {% endwith %}
     {% compress js %}
     <script src="{% static 'node_modules/flowbite/dist/flowbite.min.js' %}"></script>
     {% endcompress %}
