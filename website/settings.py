@@ -57,8 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     # Extensions
-    # 'crispy_forms',
-    # 'crispy_tailwind',
+    'django_components',
     'compressor',
 
     # Internal apps
@@ -87,7 +86,7 @@ TEMPLATES = [
             BASE_DIR / 'website/templates',
             BASE_DIR / 'users/templates',
         ],
-        'APP_DIRS': True,
+        # 'APP_DIRS': True, # Commented out - following django-components readme
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -95,6 +94,20 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+
+            # Django components custom template loaders
+            'loaders':[(
+                'django.template.loaders.cached.Loader', [
+                    'django.template.loaders.filesystem.Loader',
+                    'django.template.loaders.app_directories.Loader',
+                    'django_components.template_loader.Loader',
+                ]
+            )],
+
+            # To avoid loading the app in each template using {% load django_components %}
+            'builtins': [
+                'django_components.templatetags.component_tags',
+            ]
         },
     },
 ]
@@ -158,7 +171,8 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "website/static",
     BASE_DIR / "users/static",
-    BASE_DIR / "node_modules"
+    BASE_DIR / "node_modules",
+    BASE_DIR / "website/components",
 ]
 STATIC_ROOT = BASE_DIR / "static_collection"
 
