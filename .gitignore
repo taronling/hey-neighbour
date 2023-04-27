@@ -9,3 +9,4 @@ static_collection/
 dev_env/
 CACHE/
 users/migrations
+website/static/css/home.css
