@@ -3,7 +3,7 @@
     width: 100%;
 }
 
-#profile-picture {
-    width: 12rem;
-    height: 12rem;
+#profile-picture-container {
+    height: 8rem;
+    width: 8rem;
 }
