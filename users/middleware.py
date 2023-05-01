@@ -1,6 +1,7 @@
 # Internal Imports
 from .utils import get_user_location
 
+
 class UpdateUserLocationMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response

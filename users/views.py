@@ -13,8 +13,6 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 
 
-
-
 class UserSignUpView(CreateView):
     form_class = SignUpForm
     success_url = reverse_lazy('profile')
@@ -38,8 +36,6 @@ class UserLoginView(LoginView):
         user = form.get_user()
         login(self.request, user)
         return redirect(self.success_url)
-    
-
     
 
 class UserProfileView(DetailView):
