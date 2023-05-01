@@ -23,7 +23,7 @@ from django.conf import settings
 
 # Views
 from django.contrib.auth.views import LogoutView
-from website.views import IndexView
+from website.views import IndexView, SearchUserView
 
 
 urlpatterns = [
@@ -31,4 +31,5 @@ urlpatterns = [
     path('', IndexView.as_view(), name='home'),
     path('user/', include('users.urls')),
     path('logout/', LogoutView.as_view(), name='logout'),
+    path('search_users/', SearchUserView.as_view(), name='search_users'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
