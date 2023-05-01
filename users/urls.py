@@ -10,5 +10,5 @@ LogEntry.user.field.rel_to = 'users.User'
 urlpatterns = [
     path('login/', UserLoginView.as_view(), name='login'),
     path('signup/', UserSignUpView.as_view(), name='signup'),    
-    path('profile/', UserProfileView.as_view(), name='profile'),
-]
+    path('profile/<int:user_id>/', UserProfileView.as_view(), name='profile'),
+    ]
