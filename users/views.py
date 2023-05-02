@@ -49,4 +49,4 @@ class UserProfileView(DetailView):
         print(user_id)
         user = get_object_or_404(User, id=self.kwargs['user_id'])
         print(user.first_name, user.last_name)
-        return self.request.user
+        return user
