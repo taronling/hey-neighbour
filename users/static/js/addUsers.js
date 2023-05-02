@@ -2,7 +2,7 @@ document.getElementById('add-friend-form').addEventListener('submit', function (
     event.preventDefault();
 
     const formData = new FormData(event.target);
-    const url = event.target.action;
+    const url = event.target.getAttribute('action');
 
     fetch(url, {
         method: 'POST',
@@ -14,16 +14,18 @@ document.getElementById('add-friend-form').addEventListener('submit', function (
         .then(response => response.json())
         .then(data => {
             if (data.status === 'ok') {
-                const friendButton = document.querySelector('button[type="submit"]');
                 if (data.action === 'added') {
-                    friendButton.textContent = 'Remove Friend';
-                    friendButton.form.querySelector('input[name="action"]').value = 'remove';
+                    event.target.querySelector('button').textContent = 'Remove Friend';
+                    event.target.querySelector('input[name="action"]').value = 'remove';
                 } else if (data.action === 'removed') {
-                    friendButton.textContent = 'Add Friend';
-                    friendButton.form.querySelector('input[name="action"]').value = 'add';
+                    event.target.querySelector('button').textContent = 'Add Friend';
+                    event.target.querySelector('input[name="action"]').value = 'add';
                 }
             } else {
                 console.error('Error adding/removing friend:', data.message);
             }
         })
-        .catch
+        .catch(error => {
+            console.error('Error adding/removing friend:', error);
+        });
+});

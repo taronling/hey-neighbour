@@ -59,6 +59,7 @@ class UserProfileView(DetailView):
         ).exists()
         return context
 
+from django.db.models import Q
 
 class AddRemoveFriendView(View):
     http_method_names = ['post']
@@ -66,14 +67,31 @@ class AddRemoveFriendView(View):
     def post(self, request, *args, **kwargs):
         friend_id = request.POST.get('friend_id')
         action = request.POST.get('action')
+        print(action)
 
         if friend_id and action in ['add', 'remove']:
             friend = get_object_or_404(User, pk=friend_id)
 
             if action == 'add':
-                request.user.friends.add(friend)
-                return JsonResponse({'status': 'ok', 'message': 'Friend added successfully', 'action': 'added'})
+                # Check if the connection already exists
+                connection_exists = FriendConnection.objects.filter(
+                    Q(user1=request.user, user2=friend) | Q(user1=friend, user2=request.user)
+                ).exists()
+
+                if not connection_exists:
+                    friendship = FriendConnection(user1=request.user, user2=friend)
+                    friendship.save()
+                    return JsonResponse({'status': 'ok', 'message': 'Friend added successfully', 'action': 'added'})
+                else:
+                    return JsonResponse({'status': 'error', 'message': 'Friend connection already exists'})
             else:
-                request.user.friends.remove(friend)
-                return JsonResponse({'status': 'ok', 'message': 'Friend removed successfully', 'action': 'removed'})
+                # Remove the connection from the FriendConnection table
+                connection = FriendConnection.objects.filter(
+                    Q(user1=request.user, user2=friend) | Q(user1=friend, user2=request.user)
+                )
+                if connection.exists():
+                    connection.delete()
+                    return JsonResponse({'status': 'ok', 'message': 'Friend removed successfully', 'action': 'removed'})
+                else:
+                    return JsonResponse({'status': 'error', 'message': 'Friend connection not found'})
         return JsonResponse({'status': 'error', 'message': 'Invalid friend ID or action'})
