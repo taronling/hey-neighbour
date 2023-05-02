@@ -26,7 +26,7 @@ class SearchUserView(ListView):
         query = self.request.GET.get('query', '')
         print(query)
         if query:
-            return User.objects.filter(Q(email__icontains=query) | Q(first_name__icontains=query) | Q(last_name__icontains=query))[:10]
+            return User.objects.filter(Q(first_name__icontains=query) | Q(last_name__icontains=query))[:10]
         return User.objects.none()
 
     def render_to_response(self, context, **response_kwargs):
