@@ -10,10 +10,19 @@ function displaySearchResults(users) {
     users.forEach(user => {
         const userDiv = document.createElement('div');
         userDiv.classList.add('p-2', 'border-b', 'border-gray-200');
-        userDiv.innerHTML = `<span class="font-semibold">${user.fields.username}</span> (${user.fields.first_name} ${user.fields.last_name})`;
+
+        // Create an anchor element for the user's profile link
+        const userProfileLink = document.createElement('a');
+        userProfileLink.href = `/user/profile/${user.pk}/`;
+        userProfileLink.innerHTML = `<span class="font-semibold">${user.fields.username}</span> (${user.fields.first_name} ${user.fields.last_name})`;
+
+        // Append the anchor element to the userDiv
+        userDiv.appendChild(userProfileLink);
+
         searchResultsDiv.appendChild(userDiv);
     });
 }
+
 
 function searchUsers(query) {
     if (!query) {
