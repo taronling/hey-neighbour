@@ -14,7 +14,7 @@ function displaySearchResults(users) {
         // Create an anchor element for the user's profile link
         const userProfileLink = document.createElement('a');
         userProfileLink.href = `/user/profile/${user.pk}/`;
-        userProfileLink.innerHTML = `<span class="font-semibold">${user.fields.username}</span> (${user.fields.first_name} ${user.fields.last_name})`;
+        userProfileLink.innerHTML = `<span class="font-semibold">${user.fields.first_name} ${user.fields.last_name}</span>`;
 
         // Append the anchor element to the userDiv
         userDiv.appendChild(userProfileLink);
