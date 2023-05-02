@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.views.generic.edit import CreateView
 from django.views.generic import View, DetailView
 from django.contrib.auth.views import LoginView
+from django.db.models import Q
 
 # Django Authentication
 from .forms import SignUpForm, LoginForm
@@ -52,18 +53,27 @@ class UserProfileView(DetailView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['is_friend'] = self.request.user.friends.filter(pk=self.object.id).exists()
+        context['is_friend'] = FriendConnection.objects.filter(
+            Q(user1=self.request.user, user2=self.object) | 
+            Q(user1=self.object, user2=self.request.user)
+        ).exists()
         return context
 
 
-class AddFriendView(View):
+class AddRemoveFriendView(View):
     http_method_names = ['post']
 
     def post(self, request, *args, **kwargs):
         friend_id = request.POST.get('friend_id')
-        if friend_id:
+        action = request.POST.get('action')
+
+        if friend_id and action in ['add', 'remove']:
             friend = get_object_or_404(User, pk=friend_id)
-            friendship = FriendConnection(user1=request.user, user2=friend)
-            friendship.save()
-            return JsonResponse({'status': 'success', 'message': 'Friend added successfully'})
-        return JsonResponse({'status': 'error', 'message': 'Invalid friend ID'})
+
+            if action == 'add':
+                request.user.friends.add(friend)
+                return JsonResponse({'status': 'ok', 'message': 'Friend added successfully', 'action': 'added'})
+            else:
+                request.user.friends.remove(friend)
+                return JsonResponse({'status': 'ok', 'message': 'Friend removed successfully', 'action': 'removed'})
+        return JsonResponse({'status': 'error', 'message': 'Invalid friend ID or action'})

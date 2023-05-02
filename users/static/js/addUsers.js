@@ -13,15 +13,17 @@ document.getElementById('add-friend-form').addEventListener('submit', function (
     })
         .then(response => response.json())
         .then(data => {
-            if (data.status === 'success') {
-                // Friend added successfully, update the UI as needed
-                console.log(data.message);
+            if (data.status === 'ok') {
+                const friendButton = document.querySelector('button[type="submit"]');
+                if (data.action === 'added') {
+                    friendButton.textContent = 'Remove Friend';
+                    friendButton.form.querySelector('input[name="action"]').value = 'remove';
+                } else if (data.action === 'removed') {
+                    friendButton.textContent = 'Add Friend';
+                    friendButton.form.querySelector('input[name="action"]').value = 'add';
+                }
             } else {
-                // Error occurred
-                console.error(data.message);
+                console.error('Error adding/removing friend:', data.message);
             }
         })
-        .catch(error => {
-            console.error('Error adding friend:', error);
-        });
-});
+        .catch
