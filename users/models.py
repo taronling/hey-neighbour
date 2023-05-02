@@ -40,6 +40,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=30, blank=False, null=False)
     last_name = models.CharField(max_length=30, blank=False, null=False)
 
+    # Profile data
+    profile_picture = models.ImageField(upload_to='profile_pictures/', default='profile_default.svg', blank=True, null=True)
+    bio = models.TextField(max_length=300, blank=True, null=True)
+
     # Location data
     country = models.CharField(max_length=60, blank=True, null=True)
     city = models.CharField(max_length=85, blank=True, null=True)
@@ -49,9 +53,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
     last_online = models.DateTimeField(default=timezone.now)
-
-    # Social Network Data
-    friends = models.ManyToManyField("User", blank=True, symmetrical=True)
 
     objects = CustomUserManager()
 

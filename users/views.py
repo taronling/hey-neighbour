@@ -6,7 +6,7 @@ from django.contrib.auth.views import LoginView
 from django.db.models import Q
 
 # Django Authentication
-from .forms import SignUpForm, LoginForm
+from .forms import SignUpForm, LoginForm, CustomUserChangeForm
 from django.contrib.auth import login, authenticate
 
 # Django Redirects
@@ -50,16 +50,21 @@ class UserProfileView(DetailView):
     def get_object(self):
         user = get_object_or_404(User, id=self.kwargs['user_id'])
         return user
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['is_friend'] = FriendConnection.objects.filter(
-            Q(user1=self.request.user, user2=self.object) | 
-            Q(user1=self.object, user2=self.request.user)
-        ).exists()
+        context['form'] = CustomUserChangeForm(instance=self.request.user)
         return context
 
-from django.db.models import Q
+    def post(self, request, *args, **kwargs):
+        form = CustomUserChangeForm(
+            request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect(request.path_info)
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
 
 class AddRemoveFriendView(View):
     http_method_names = ['post']

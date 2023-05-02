@@ -1,4 +1,5 @@
 # Form Imports
+from django.contrib.auth.forms import UserChangeForm
 from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -49,3 +50,9 @@ class LoginForm(AuthenticationForm):
         if email and password:
             self.cleaned_data['username'] = email
             return super(LoginForm, self).clean()
+        
+
+class CustomUserChangeForm(UserChangeForm):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'profile_picture', 'bio')
