@@ -45,8 +45,6 @@ class UserProfileView(DetailView):
     model = User
     template_name = 'profile.html'
 
-    def get_object(self, user_id=None):
-        print(user_id)
+    def get_object(self):
         user = get_object_or_404(User, id=self.kwargs['user_id'])
-        print(user.first_name, user.last_name)
         return user
