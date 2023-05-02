@@ -25,13 +25,14 @@ class SearchUserView(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('query', '')
-        print(query)
+        current_user = self.request.user
+        
         if query:
             return User.objects.annotate(full_name=Concat('first_name', Value(' '), 'last_name')).filter(
                 Q(first_name__icontains=query) |
                 Q(last_name__icontains=query) |
                 Q(full_name__icontains=query)
-            )[:10]
+            ).exclude(id=current_user.id)[:10]
         return User.objects.none()
 
     def render_to_response(self, context, **response_kwargs):
