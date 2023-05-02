@@ -28,14 +28,19 @@
 
             <!-- Add Friend button -->
             {% if user.id != request.user.id %}
-                <div class="row-start-6 row-span-1 col-start-8">
-                    <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <div class="row-start-6 row-span-1 col-start-8">
+                <form id="add-friend-form" method="post" action="{% url 'add_friend' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="friend_id" value="{{ user.id }}">
+                    <button type="submit" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         Add Friend
-                    </a>
-                </div>
+                    </button>
+                </form>
+            </div>
             {% endif %}
 
         </div> 
     </div>
 
+    <script src="{% static 'users\static\js\addUsers.js' %}"></script>
 {% endblock %}

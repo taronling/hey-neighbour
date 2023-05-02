@@ -1,4 +1,5 @@
 # Django Views
+from django.http import JsonResponse
 from django.views.generic.edit import CreateView
 from django.views.generic import View, DetailView
 from django.contrib.auth.views import LoginView
@@ -12,7 +13,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse, reverse_lazy
 
 # Internal Imports
-from .models import User
+from .models import User, FriendConnection
 
 class UserSignUpView(CreateView):
     form_class = SignUpForm
@@ -48,3 +49,21 @@ class UserProfileView(DetailView):
     def get_object(self):
         user = get_object_or_404(User, id=self.kwargs['user_id'])
         return user
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_friend'] = self.request.user.friends.filter(pk=self.object.id).exists()
+        return context
+
+
+class AddFriendView(View):
+    http_method_names = ['post']
+
+    def post(self, request, *args, **kwargs):
+        friend_id = request.POST.get('friend_id')
+        if friend_id:
+            friend = get_object_or_404(User, pk=friend_id)
+            friendship = FriendConnection(user1=request.user, user2=friend)
+            friendship.save()
+            return JsonResponse({'status': 'success', 'message': 'Friend added successfully'})
+        return JsonResponse({'status': 'error', 'message': 'Invalid friend ID'})

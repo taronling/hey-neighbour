@@ -60,3 +60,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+    
+
+class FriendConnection(models.Model):
+    user1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="friendship_initiated")
+    user2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="friendship_received")
+    created_at = models.DateTimeField(auto_now_add=True)
