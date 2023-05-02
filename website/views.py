@@ -1,4 +1,5 @@
-from django.db.models import Q
+from django.db.models import Q, Value
+from django.db.models.functions import Concat
 from django.core import serializers
 from django.views.generic import ListView
 from django.http import JsonResponse
@@ -26,7 +27,11 @@ class SearchUserView(ListView):
         query = self.request.GET.get('query', '')
         print(query)
         if query:
-            return User.objects.filter(Q(first_name__icontains=query) | Q(last_name__icontains=query))[:10]
+            return User.objects.annotate(full_name=Concat('first_name', Value(' '), 'last_name')).filter(
+                Q(first_name__icontains=query) |
+                Q(last_name__icontains=query) |
+                Q(full_name__icontains=query)
+            )[:10]
         return User.objects.none()
 
     def render_to_response(self, context, **response_kwargs):
