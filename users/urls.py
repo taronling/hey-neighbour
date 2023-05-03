@@ -12,4 +12,5 @@ urlpatterns = [
     path('signup/', UserSignUpView.as_view(), name='signup'),    
     path('profile/<int:user_id>/', UserProfileView.as_view(), name='profile'),
     path('add_remove_friend/', AddRemoveFriendView.as_view(),name='add_remove_friend'),
+    path('profile/<int:user_id>/upload_picture/', UserProfileView.upload_picture, name='upload_picture'),
     ]

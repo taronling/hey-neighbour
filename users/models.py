@@ -41,7 +41,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=30, blank=False, null=False)
 
     # Profile data
-    profile_picture = models.ImageField(upload_to='profile_pictures/', default='profile_default.svg', blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='profile_pictures/', default='img/profile-default.svg', blank=True, null=True)
     bio = models.TextField(max_length=300, blank=True, null=True)
 
     # Location data

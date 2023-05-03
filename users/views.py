@@ -56,14 +56,11 @@ class UserProfileView(DetailView):
         context['form'] = CustomUserChangeForm(instance=self.request.user)
         return context
 
-    def post(self, request, *args, **kwargs):
-        form = CustomUserChangeForm(
-            request.POST, request.FILES, instance=request.user)
-        if form.is_valid():
-            form.save()
+    def upload_picture(request, *args, **kwargs):
+        if request.method == "POST" and request.FILES:
+            request.user.profile_picture = request.FILES['profile_picture']
+            request.user.save()
             return redirect(request.path_info)
-        else:
-            return self.render_to_response(self.get_context_data(form=form))
 
 
 class AddRemoveFriendView(View):

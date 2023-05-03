@@ -26,7 +26,7 @@
                 <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Bio Placeholder</p>
             </div>
 
-            <!-- Add Friend button -->
+            <!-- If profile doesn't belong to request user, add "Add/Remove Friend" button -->
             {% if user.id != request.user.id %}
             <div class="row-start-6 row-span-1 col-start-8">
                 <form id="add-friend-form" method="post" action="{% url 'add_remove_friend' %}">
@@ -47,12 +47,21 @@
                 </form>
             </div>
             
+            <!-- Otherwise let the user edit their profile -->
             {% else %}
-                <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit" class="btn btn-primary">Update Profile</button>
-                </form>
+                <div id="profilePictureModal" class="fixed inset-0 hidden items-center justify-center z-50">
+                    <div class="fixed inset-0 bg-black opacity-70"></div>
+                    <div class="bg-white p-8 w-11/12 md:w-1/2 lg:w-1/3 rounded-lg">
+                        <img id="previewPicture" src="{{ user.profile_picture.url }}" class="mx-auto w-full h-auto" alt="Profile picture">
+                        <form method="post" enctype="multipart/form-data" action="{% url 'upload_picture' user.id %}">
+                            {% csrf_token %}
+                            <input type="file" name="profile_picture" id="fileInput" class="hidden">
+                            <label for="fileInput" class="mt-4 inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-lg cursor-pointer">
+                                Upload New Picture
+                            </label>
+                        </form>
+                    </div>
+                </div>
             {% endif %}
 
 
